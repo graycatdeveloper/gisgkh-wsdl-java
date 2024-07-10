@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dom.gosuslugi.ru/schema/integration/licenses-service-async/" xmlns:lc="http://dom.gosuslugi.ru/schema/integration/licenses/" xmlns:base="http://dom.gosuslugi.ru/schema/integration/base/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns="http://www.w3.org/2000/09/xmldsig#" xmlns:ns1="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/" xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/nsi-base/" xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/" xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-base/" xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/premises-base/" targetNamespace="http://dom.gosuslugi.ru/schema/integration/licenses-service-async/">
+	<wsdl:types>
+		<xs:schema version="14.4.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://dom.gosuslugi.ru/schema/integration/licenses/" schemaLocation="hcs-licenses-types.xsd"/>
+			<xs:import namespace="http://dom.gosuslugi.ru/schema/integration/base/" schemaLocation="../lib/hcs-base.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="Fault">
+		<wsdl:part name="Fault" element="base:Fault"/>
+	</wsdl:message>
+	<wsdl:message name="RequestHeader">
+		<wsdl:part name="Header" element="base:RequestHeader"/>
+	</wsdl:message>
+	<wsdl:message name="ResultHeader">
+		<wsdl:part name="Header" element="base:ResultHeader"/>
+	</wsdl:message>
+	<wsdl:message name="exportLicenseRequest">
+		<wsdl:part name="exportLicenseRequest" element="lc:exportLicenseRequest"/>
+	</wsdl:message>
+	<wsdl:message name="exportLicenseResult">
+		<wsdl:part name="AckRequest" element="base:AckRequest"/>
+	</wsdl:message>
+	<wsdl:message name="exportDisqualifiedPersonRequest">
+		<wsdl:part name="exportDisqualifiedPersonRequest" element="lc:exportDisqualifiedPersonRequest"/>
+	</wsdl:message>
+	<wsdl:message name="exportDisqualifiedPersonResult">
+		<wsdl:part name="AckRequest" element="base:AckRequest"/>
+	</wsdl:message>
+	<wsdl:message name="exportActualLicenseStateRequest">
+		<wsdl:part name="exportActualLicenseStateRequest" element="lc:exportActualLicenseStateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="exportActualLicenseStateResult">
+		<wsdl:part name="AckRequest" element="base:AckRequest"/>
+	</wsdl:message>
+	<wsdl:message name="importLicenseEntryRequest">
+		<wsdl:part name="importLicenseEntryRequest" element="lc:importLicenseEntryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="importLicenseEntryResult">
+		<wsdl:part name="AckRequest" element="base:AckRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getStateRequest">
+		<wsdl:part name="getStateRequest" element="base:getStateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getStateResult">
+		<wsdl:part name="getStateResult" element="lc:getStateResult"/>
+	</wsdl:message>
+	<wsdl:portType name="LicensePortsTypeAsync">
+		<wsdl:operation name="exportLicense">
+			<wsdl:documentation>Экспорт сведений из реестра лицензий (старый формат)</wsdl:documentation>
+			<wsdl:input message="tns:exportLicenseRequest"/>
+			<wsdl:output message="tns:exportLicenseResult"/>
+			<wsdl:fault name="InvalidRequest" message="tns:Fault"/>
+		</wsdl:operation>
+		<wsdl:operation name="exportDisqualifiedPerson">
+			<wsdl:documentation>Экспорт сведений из реестра дисквалифицированных лиц</wsdl:documentation>
+			<wsdl:input message="tns:exportDisqualifiedPersonRequest"/>
+			<wsdl:output message="tns:exportDisqualifiedPersonResult"/>
+			<wsdl:fault name="InvalidRequest" message="tns:Fault"/>
+		</wsdl:operation>
+		<wsdl:operation name="exportActualLicenseState">
+			<wsdl:documentation>Экспорт сведений из реестра лицензий (по реестровой модели)</wsdl:documentation>
+			<wsdl:input message="tns:exportActualLicenseStateRequest"/>
+			<wsdl:output message="tns:exportActualLicenseStateResult"/>
+			<wsdl:fault name="InvalidRequest" message="tns:Fault"/>
+		</wsdl:operation>
+		<wsdl:operation name="importLicenseEntry">
+			<wsdl:documentation>Импорт реестровых записей</wsdl:documentation>
+			<wsdl:input message="tns:importLicenseEntryRequest"/>
+			<wsdl:output message="tns:importLicenseEntryResult"/>
+			<wsdl:fault name="InvalidRequest" message="tns:Fault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getState">
+			<wsdl:input message="tns:getStateRequest"/>
+			<wsdl:output message="tns:getStateResult"/>
+			<wsdl:fault name="InvalidRequest" message="tns:Fault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LicenseBindingAsync" type="tns:LicensePortsTypeAsync">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="exportLicense">
+			<soap:operation soapAction="urn:exportLicense"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+				<soap:header message="tns:RequestHeader" part="Header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+				<soap:header message="tns:ResultHeader" part="Header" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidRequest">
+				<soap:fault name="InvalidRequest" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="exportDisqualifiedPerson">
+			<soap:operation soapAction="urn:exportDisqualifiedPerson"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+				<soap:header message="tns:RequestHeader" part="Header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+				<soap:header message="tns:ResultHeader" part="Header" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidRequest">
+				<soap:fault name="InvalidRequest" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getState">
+			<soap:operation soapAction="urn:getState"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+				<soap:header message="tns:RequestHeader" part="Header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+				<soap:header message="tns:ResultHeader" part="Header" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidRequest">
+				<soap:fault name="InvalidRequest" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="exportActualLicenseState">
+			<soap:operation soapAction="urn:exportActualLicenseState"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+				<soap:header message="tns:RequestHeader" part="Header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+				<soap:header message="tns:ResultHeader" part="Header" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidRequest">
+				<soap:fault name="InvalidRequest" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="importLicenseEntry">
+			<soap:operation soapAction="urn:importLicenseEntry"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+				<soap:header message="tns:RequestHeader" part="Header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+				<soap:header message="tns:ResultHeader" part="Header" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidRequest">
+				<soap:fault name="InvalidRequest" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="LicenseServiceAsync">
+		<wsdl:documentation>Асинхронный сервис управления экспортом лицензий и дисквалифицированных лиц</wsdl:documentation>
+		<wsdl:port name="LicensesPortAsync" binding="tns:LicenseBindingAsync">
+			<soap:address location="https://api.dom.gosuslugi.ru/ext-bus-licenses-service/services/LicensesAsync"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

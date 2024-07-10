@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://dom.gosuslugi.ru/schema/integration/base/" xmlns:debt="http://dom.gosuslugi.ru/schema/integration/debts/" xmlns:ns="http://www.w3.org/2000/09/xmldsig#" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://dom.gosuslugi.ru/schema/integration/debts-async/" targetNamespace="http://dom.gosuslugi.ru/schema/integration/debts-async/">
+	<wsdl:types>
+		<xs:schema version="13.3.1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://dom.gosuslugi.ru/schema/integration/debts/" schemaLocation="hcs-debts-types.xsd"/>
+			<xs:import namespace="http://dom.gosuslugi.ru/schema/integration/base/" schemaLocation="../lib/hcs-base.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="importDebtRequest">
+		<wsdl:part name="importDebtRequest" element="debt:importDebtRequest"/>
+	</wsdl:message>
+	<wsdl:message name="AckRequest">
+		<wsdl:part name="AckRequest" element="base:AckRequest"/>
+	</wsdl:message>
+	<wsdl:message name="Fault">
+		<wsdl:part name="Fault" element="base:Fault"/>
+	</wsdl:message>
+	<wsdl:message name="getStateRequest">
+		<wsdl:part name="getRequestState" element="base:getStateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getStateResult">
+		<wsdl:part name="getRequestStateResult" element="debt:getStateResult"/>
+	</wsdl:message>
+	<wsdl:message name="RequestHeader">
+		<wsdl:part name="Header" element="base:RequestHeader"/>
+	</wsdl:message>
+	<wsdl:message name="ResultHeader">
+		<wsdl:part name="Header" element="base:ResultHeader"/>
+	</wsdl:message>
+	<wsdl:message name="exportDebtRequest">
+		<wsdl:part name="exportDebtRequest" element="debt:exportDebtRequest"/>
+	</wsdl:message>
+	<wsdl:portType name="DebtPortsTypeAsync">
+		<wsdl:operation name="importDebt">
+			<wsdl:documentation>Импорт о сведений о задолженностях за ЖКУ</wsdl:documentation>
+			<wsdl:input message="tns:importDebtRequest"/>
+			<wsdl:output message="tns:AckRequest"/>
+			<wsdl:fault name="InvalidRequest" message="tns:Fault"/>
+		</wsdl:operation>
+		<wsdl:operation name="exportDebt">
+			<wsdl:documentation>Экспорт сведений о задолженностях за ЖКУ</wsdl:documentation>
+			<wsdl:input message="tns:exportDebtRequest"/>
+			<wsdl:output message="tns:AckRequest"/>
+			<wsdl:fault name="InvalidRequest" message="tns:Fault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getState">
+			<wsdl:documentation>Получение статуса обработки запроса</wsdl:documentation>
+			<wsdl:input message="tns:getStateRequest"/>
+			<wsdl:output message="tns:getStateResult"/>
+			<wsdl:fault name="InvalidRequest" message="tns:Fault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="DebtAsyncBinding" type="tns:DebtPortsTypeAsync">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="importDebt">
+			<wsdl:documentation>Импорт о сведений о задолженностях за ЖКУ</wsdl:documentation>
+			<soap:operation soapAction="urn:importDebt"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+				<soap:header message="tns:RequestHeader" part="Header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+				<soap:header message="tns:ResultHeader" part="Header" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidRequest"/>
+		</wsdl:operation>
+		<wsdl:operation name="exportDebt">
+			<wsdl:documentation>Экспорт сведений о задолженностях за ЖКУ</wsdl:documentation>
+			<soap:operation soapAction="urn:exportDebt"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+				<soap:header message="tns:RequestHeader" part="Header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+				<soap:header message="tns:ResultHeader" part="Header" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidRequest"/>
+		</wsdl:operation>
+		<wsdl:operation name="getState">
+			<wsdl:documentation>Получение статуса обработки запроса</wsdl:documentation>
+			<soap:operation soapAction="urn:getState"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+				<soap:header message="tns:RequestHeader" part="Header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+				<soap:header message="tns:ResultHeader" part="Header" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidRequest"/>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="DebtServiceAsync">
+		<wsdl:port name="DebtPortAsync" binding="tns:DebtAsyncBinding">
+			<soap:address location="https://api.dom.gosuslugi.ru/ext-bus-debt-service/services/DebtAsync"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

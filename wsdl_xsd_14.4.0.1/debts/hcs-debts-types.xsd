@@ -1,0 +1,1053 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dom.gosuslugi.ru/schema/integration/debts/" xmlns:base="http://dom.gosuslugi.ru/schema/integration/base/" xmlns:premises-base="http://dom.gosuslugi.ru/schema/integration/premises-base/" xmlns:nsi-base="http://dom.gosuslugi.ru/schema/integration/nsi-base/" xmlns:organizations-base="http://dom.gosuslugi.ru/schema/integration/organizations-base/" xmlns:ns1="http://dom.gosuslugi.ru/schema/integration/debts/" targetNamespace="http://dom.gosuslugi.ru/schema/integration/debts/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="13.3.1.0">
+	<xs:import namespace="http://dom.gosuslugi.ru/schema/integration/base/" schemaLocation="../lib/hcs-base.xsd"/>
+	<xs:import namespace="http://dom.gosuslugi.ru/schema/integration/premises-base/" schemaLocation="../lib/hcs-premises-base.xsd"/>
+	<xs:import namespace="http://dom.gosuslugi.ru/schema/integration/nsi-base/" schemaLocation="../lib/hcs-nsi-base.xsd"/>
+	<xs:import namespace="http://dom.gosuslugi.ru/schema/integration/organizations-base/" schemaLocation="../lib/hcs-organizations-base.xsd"/>
+	<!--Операции со сведениями о задолженностях за ЖКУ-->
+	<xs:element name="importDebtRequest">
+		<xs:annotation>
+			<xs:documentation>Запрос на импорт сведений о задолженностях за ЖКУ</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="base:BaseType">
+					<xs:sequence>
+						<xs:element name="Debt" maxOccurs="100">
+							<xs:annotation>
+								<xs:documentation>Сведения о задолженностях за ЖКУ</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="base:TransportGUID"/>
+									<xs:choice>
+										<xs:element name="PlacingDebt">
+											<xs:annotation>
+												<xs:documentation>Размещение сведений о задолженностях за ЖКУ</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="DebtObject" type="tns:DebtObjectType">
+														<xs:annotation>
+															<xs:documentation>Объект жилого фонда, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="DebtorData" type="tns:DebtorType">
+														<xs:annotation>
+															<xs:documentation>Cведения о гражданине, у которого имеется задолженность, подтвержденная судебным актом </xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="JudicalAct">
+														<xs:annotation>
+															<xs:documentation>Сведения о судебном акте</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="JudicalActNumber">
+																	<xs:annotation>
+																		<xs:documentation>Номер судебного акта</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:minLength value="1"/>
+																			<xs:maxLength value="255"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="JudicalActDate" type="xs:date">
+																	<xs:annotation>
+																		<xs:documentation>Дата вступления в силу судебного акта</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="JudicalActAttachment" type="base:AttachmentType" maxOccurs="1000">
+																	<xs:annotation>
+																		<xs:documentation>Файл судебного акта</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Act" type="base:AttachmentType" minOccurs="0" maxOccurs="1000">
+														<xs:annotation>
+															<xs:documentation>Акт сверки</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AdditionalInfo" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дополнительная информация</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:minLength value="1"/>
+																<xs:maxLength value="1000"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="AdditionalAttachment" type="base:AttachmentType" minOccurs="0" maxOccurs="1000">
+														<xs:annotation>
+															<xs:documentation>Дополнительные файлы</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="EditDebt">
+											<xs:annotation>
+												<xs:documentation>Редактирование сведений о задолженностях за ЖКУ</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="DebtGUID" type="base:GUIDType">
+														<xs:annotation>
+															<xs:documentation>Уникальный идентификатор  сведений о задолженности за ЖКУ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Act" type="base:AttachmentType" minOccurs="0" maxOccurs="1000">
+														<xs:annotation>
+															<xs:documentation>Акт сверки</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AdditionalAttachment" type="base:AttachmentType" minOccurs="0" maxOccurs="1000">
+														<xs:annotation>
+															<xs:documentation>Дополнительные файлы</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AdditionalInfo" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дополнительная информация</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:minLength value="1"/>
+																<xs:maxLength value="1000"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="AnnulmentDebt">
+											<xs:annotation>
+												<xs:documentation>Аннулирование сведений о задолженностях за ЖКУ</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="DebtGUID" type="base:GUIDType">
+														<xs:annotation>
+															<xs:documentation>Уникальный идентификатор  сведений о задолженности за ЖКУ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AnnulmentReason" type="nsi-base:nsiRef">
+														<xs:annotation>
+															<xs:documentation>Причина аннулирования сведений о задолженности за ЖКУ. Ссылка на НСИ "Причины аннулирования записи о задолженности за коммунальные услуги" (реестровый номер 365)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AnnulmentTextReason" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Текстовая причина аннулирования сведений о задолженности за ЖКУ. Заполняется, если Причина аннулирования = 5. Иная</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:minLength value="1"/>
+																<xs:maxLength value="1000"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="PlacingDebtRepayment">
+											<xs:annotation>
+												<xs:documentation>Размещение сведений о погашении задолженности за ЖКУ</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="DebtGUID" type="base:GUIDType">
+														<xs:annotation>
+															<xs:documentation>Уникальный идентификатор  сведений о задолженности за ЖКУ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="PlacingInfo" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Комментарий при погашении задолженности</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:minLength value="1"/>
+																<xs:maxLength value="1000"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="PlacingDate" type="xs:date" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата погашения задолженности</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="AnnulmentDebtRepayment">
+											<xs:annotation>
+												<xs:documentation>Аннулирование сведений о погашении задолженности за ЖКУ</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="DebtGUID" type="base:GUIDType">
+														<xs:annotation>
+															<xs:documentation>Уникальный идентификатор  сведений о задолженности за ЖКУ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AnnulmentReason" type="nsi-base:nsiRef">
+														<xs:annotation>
+															<xs:documentation>Причина аннулирования сведений о погашении задолженности за ЖКУ. Ссылка на НСИ "Причины аннулирования  информации о погашении задолженности за коммунальные услуги" (реестровый номер 366)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AnnulmentTextReason" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Текстовая причина аннулирования сведений о погашении задолженности за ЖКУ. Заполняется, если Причина аннулирования = 3. Иная</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:minLength value="1"/>
+																<xs:maxLength value="1000"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:choice>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute ref="base:version" use="required" fixed="13.3.1.0"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:key name="importDebt_TransportGUIDKey">
+			<xs:selector xpath=".//base:TransportGUID"/>
+			<xs:field xpath="."/>
+		</xs:key>
+		<xs:key name="DebtGUIDKey">
+			<xs:selector xpath=".//tns:DebtGUID"/>
+			<xs:field xpath="."/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="exportDebtRequest">
+		<xs:annotation>
+			<xs:documentation>Запрос на экспорт сведений о задолженностях за ЖКУ</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="base:BaseType">
+					<xs:sequence>
+						<xs:element name="ExportCriteria" type="tns:ExportCriteriaDebtType">
+							<xs:annotation>
+								<xs:documentation>Критерии экспорта сведений о задолженностях за ЖКУ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="NextPageExportRequestGUID" type="base:GUIDType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Идентификатор, используемый для экспорта 2-го и последующих блоков данных.
+
+Если в элементе exportDebtRequest указаны условия отбора по атрибутам запроса, то экспорт осуществляется блоками по 1000 записей в каждом блоке (последний блок может содержать меньшее число записей).
+Элемент NextPageExportRequestGUID не указывается для экспорта первого блока данных. Для экспорта каждого следующего блока данных в элементе NextPageExportRequestGUID должно указываться значение элемента tns:getStateResult/tns:ExportDebt/tns:ExportDebtGUID, полученное при экспорте предыдущего блока данных</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute ref="base:version" use="required" fixed="13.3.1.0"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="exportDebtResult">
+		<xs:annotation>
+			<xs:documentation>Результат экспорта сведений о задолженности за ЖКУ</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="base:BaseType">
+					<xs:choice>
+						<xs:element name="exportDebtResult" type="tns:ExportDebtResultType">
+							<xs:annotation>
+								<xs:documentation>Результат выполнения запроса на экспорт сведений о погашении задолженности за ЖКУ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="base:ErrorMessage"/>
+					</xs:choice>
+					<xs:attribute ref="base:version" use="required" fixed="13.3.1.0"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!--Операции получения статуса отправленного сообщения -->
+	<xs:element name="getStateResult">
+		<xs:annotation>
+			<xs:documentation>Возврат статуса отправленного сообщения</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="base:BaseAsyncResponseType">
+					<xs:choice minOccurs="0">
+						<xs:element name="ImportResult" type="base:CommonResultType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Результат импорта сведений о задолженности за ЖКУ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ExportDebtResult" type="tns:ExportDebtResultType" maxOccurs="1">
+							<xs:annotation>
+								<xs:documentation>Результат экспорта сведений о задолженности за ЖКУ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="base:ErrorMessage"/>
+					</xs:choice>
+					<xs:attribute ref="base:version" fixed="13.3.1.0"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!--Базовые типы-->
+	<xs:complexType name="DebtorType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий сведения о гражданине, у которого имеется задолженность, подтвержденная судебным актом</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SurName">
+				<xs:annotation>
+					<xs:documentation>Фамилия</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="FirstName">
+				<xs:annotation>
+					<xs:documentation>Имя</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Patronymic" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Отчество</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="INN" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ИНН</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{12}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SNILS" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>СНИЛС</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{11}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IdentityDocument" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Документ, удостоверяющий личность</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Type" type="nsi-base:nsiRef">
+							<xs:annotation>
+								<xs:documentation>Вид документа. Ссылка на НСИ "Документ, удостоверяющий личность" (реестровый номер 95)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Series" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Серия документа, удостоверяющего личность</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="45"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Number">
+							<xs:annotation>
+								<xs:documentation>Номер документа, удостоверяющего личность</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="45"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="StatusType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий статус информации о задолженности. Возможные значения: 
+	PUBLISHED - Информация размещена; 
+	CANCELLED - Информация аннулирована.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PUBLISHED"/>
+			<xs:enumeration value="CANCELLED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RepaimentStatusType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий статус информации о погашении задолженности. Возможные значения: 
+	PAID – Задолженность погашена; 
+	UNPAID - Задолженность не погашена.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PAID"/>
+			<xs:enumeration value="UNPAID"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ObjectStatusType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий статус информации об объекте, по которому имеется непогашенная задолженность, подтвержденная судебным актом Возможные значения: 
+	DEMOLISHED - снесен;
+	ANNULED - аннулирован.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DEMOLISHED"/>
+			<xs:enumeration value="ANNULED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DebtObjectType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий объекты жилого фонда, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="House">
+				<xs:annotation>
+					<xs:documentation>Дом, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="FiasHouseGUID" type="premises-base:FIASHouseGUIDType">
+							<xs:annotation>
+								<xs:documentation>Глобальный уникальный идентификатор дома по ФИАС/Идентификационный код дома в ГИС ЖКХ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="HouseGUID" type="base:GUIDType">
+							<xs:annotation>
+								<xs:documentation>Идентификатор дома в реестре объектов жилищного фонда ГИС ЖКХ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PremiseGUID" type="base:GUIDType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор помещения/блока в реестре объектов жилищного фонда ГИС ЖКХ, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RoomGUID" type="base:GUIDType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор комнаты в реестре объектов жилищного фонда ГИС ЖКХ, по которой имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ExportDebtDataType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий сведения о задолженноси за ЖКУ при экспорте</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DebtGUID" type="base:GUIDType">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор  сведений о задолженности за ЖКУ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DebtObject" type="tns:ExportDebtObjectResultType">
+				<xs:annotation>
+					<xs:documentation>Jбъект жилищного фонда, 
+по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Debtor" type="tns:ExportDebtorResultType">
+				<xs:annotation>
+					<xs:documentation>Сведения о гражданине, у которого имеется задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="JudicalAct">
+				<xs:annotation>
+					<xs:documentation>Сведения о судебном акте</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="JudicalActNumber">
+							<xs:annotation>
+								<xs:documentation>Номер судебного акта</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="255"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="JudicalActDate" type="xs:date">
+							<xs:annotation>
+								<xs:documentation>Дата вступления в силу судебного акта</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="JudicalActAttachment" type="base:AttachmentType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Файл судебного акта</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Act" type="base:AttachmentType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Акт сверки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdditionalAttachment" type="base:AttachmentType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Дополнительные файлы</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdditionalInfo" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дополнительная информация</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="1000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Status" type="tns:StatusType">
+				<xs:annotation>
+					<xs:documentation>Статус сведений о задолженности. Возможные значения: 
+PUBLISHED – Информация размещена; 
+CANCELLED - Информация аннулирована.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FirstPublishedDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата первого размещения сведений о задолженности</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LastPublishedDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата последнего размещения сведений о задолженности</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RepaymentData">
+				<xs:annotation>
+					<xs:documentation>Сведения о погашении задолженности за ЖКУ</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RepaymentStatus" type="tns:RepaimentStatusType">
+							<xs:annotation>
+								<xs:documentation>Статус сведений о погашении задолженности. Возможные значения: 
+PAID – Задолженность погашена; 
+UNPAID - Задолженность не погашена.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PlacingDate" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дата размещения сведений о погашении задолженности</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PlacingUserDate" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дата погашения задолженности, указанная пользователем</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PlacingInfo" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Комментарий при погашении задолженности</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="1000"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="RepaymentAnnulmentData" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Сведения об аннулировании сведений о погашении задолженности за ЖКУ</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="RepaymentAnnulmentReason" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Причина аннулирования сведений о погашении задолженности за ЖКУ</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="RepaymentAnnulmentNSIReason" type="nsi-base:nsiRef">
+													<xs:annotation>
+														<xs:documentation>Причина аннулирования сведений о погашении задолженности за ЖКУ. Ссылка на НСИ "Причины аннулирования  информации о погашении задолженности за коммунальные услуги" (реестровый номер 366)</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="RepaymentAnnulmentTextReason" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Текстовая причина аннулирования сведений о погашении задолженности за ЖКУ. Заполняется, если Причина аннулирования = 3. Иная</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="xs:string">
+															<xs:minLength value="1"/>
+															<xs:maxLength value="1000"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="RepaymentAnnulmentDate" type="xs:date" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Дата аннулирования сведений о погашении задолженности за ЖКУ</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AnnulmentData" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сведения об аннулировании </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AnnulmentDate" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дата аннулирования сведений о задолженности</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="AnnulmentReason" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Причина аннулирования сведений о задолженности за ЖКУ</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="AnnulmentNSIReason" type="nsi-base:nsiRef">
+										<xs:annotation>
+											<xs:documentation>Причина аннулирования сведений о задолженности за ЖКУ. Ссылка на НСИ "Причины аннулирования записи о задолженности за коммунальные услуги" (реестровый номер 365)</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="AnnulmentTextReason" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Текстовая причина аннулирования сведений о задолженности за ЖКУ. Заполняется, если Причина аннулирования = 5. Иная</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:minLength value="1"/>
+												<xs:maxLength value="1000"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExportDebtResultType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий результат экспорта сведений о задолженности за ЖКУ</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Debt" type="tns:ExportDebtDataType" maxOccurs="1000">
+				<xs:annotation>
+					<xs:documentation>Сведения о задолженности за ЖКУ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="ExportDebtGUID" type="base:GUIDType">
+					<xs:annotation>
+						<xs:documentation>Идентификатор сведений о задолженности за ЖКУ для экспорта следующей 1000 записей</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="IsLastPage" type="xs:boolean" fixed="true">
+					<xs:annotation>
+						<xs:documentation>Последняя страница экспорта</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExportCriteriaDebtType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий критерии экспорта сведений о задолженностях за ЖКУ</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DebtPeriod" type="base:PeriodOpen" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата вступления в силу судебного акта </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DebtPlacingPeriod" type="base:PeriodOpen" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Период размещения сведений о задолженностях за ЖКУ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DebtRepaymentPlacingPeriod" type="base:PeriodOpen" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Период размещения сведений о погашении задолженностях за ЖКУ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DebtStatuses" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список статусов сведений о задолженностях за ЖКУ</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Status" type="tns:StatusType" maxOccurs="2">
+							<xs:annotation>
+								<xs:documentation>Статус сведений о задолженности. Возможные значения: 
+PUBLISHED - Информация размещена; 
+CANCELLED - Информация аннулирована.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DebtRepaymentStatuses" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список статусов сведений о погашении задолженности за ЖКУ</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Status" type="tns:RepaimentStatusType" maxOccurs="2">
+							<xs:annotation>
+								<xs:documentation>Статус сведений о погашении задолженности. Возможные значения: 
+PAID – Задолженность погашена; 
+UNPAID - Задолженность не погашена.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DebtObject" type="tns:ExportDebtObjectRequestType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Объект жилищного фонда, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="JudicalActNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер судебного акта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DebtorData" type="tns:ExportDebtorRequestType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Cведения о гражданине, у которого имеется задолженность, подтвержденная судебным актом </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExportDebtObjectRequestType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий критерии экспорта объектов жилого фонда, по которым имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="House">
+				<xs:annotation>
+					<xs:documentation>Дом, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="FiasHouseGUID" type="premises-base:FIASHouseGUIDType">
+							<xs:annotation>
+								<xs:documentation>Глобальный уникальный идентификатор дома по ФИАС/Идентификационный код дома в ГИС ЖКХ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="HouseGUID" type="base:GUIDType">
+							<xs:annotation>
+								<xs:documentation>Идентификатор дома в реестре объектов жилищного фонда ГИС ЖКХ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PremiseGUID" type="base:GUIDType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор помещения/блока в реестре объектов жилищного фонда ГИС ЖКХ, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RoomGUID" type="base:GUIDType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор комнаты в реестре объектов жилищного фонда ГИС ЖКХ, по которой имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ExportDebtObjectResultType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий объект жилого фонда, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ObjectGUID">
+				<xs:annotation>
+					<xs:documentation>Объект жилого фонда, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="House">
+							<xs:annotation>
+								<xs:documentation>Дом, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="FiasHouseGUID" type="premises-base:FIASHouseGUIDType">
+										<xs:annotation>
+											<xs:documentation>Глобальный уникальный идентификатор дома по ФИАС/Идентификационный код дома в ГИС ЖКХ</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="HouseGUID" type="base:GUIDType">
+										<xs:annotation>
+											<xs:documentation>Идентификатор дома в реестре объектов жилищного фонда ГИС ЖКХ</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="PremiseGUID" type="base:GUIDType">
+							<xs:annotation>
+								<xs:documentation>Идентификатор помещения/блока в реестре объектов жилищного фонда ГИС ЖКХ, по которому имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="RoomGUID" type="base:GUIDType">
+							<xs:annotation>
+								<xs:documentation>Идентификатор комнаты в реестре объектов жилищного фонда ГИС ЖКХ, по которой имеется непогашенная задолженность, подтвержденная судебным актом</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ObjectStatus" type="tns:ObjectStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Статус объекта жилищного фонда. Возможные значения:
+DEMOLISHED - снесен;
+ANNULED - аннулирован.
+Если статус объекта жилищного фонда отличен от данных значений, то элемент не заполняется.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ObjectStatusDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата изменения статуса объекта жилищного фонда. Заполняется только заполнен элемент tns:ObjectStatus</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>Причина изменения статуса объекта жилищного фонда. Заполняется только заполнен элемент tns:ObjectStatus</xs:documentation>
+				</xs:annotation>
+				<xs:element name="ObjectDemolishedReason" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Причина изменения статуса объекта жилищного фонда на статус Снесен</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="500"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ObjectAnnuledReason" type="nsi-base:nsiRef">
+					<xs:annotation>
+						<xs:documentation>Причина изменения статуса объекта жилищного фонда на статус Аннулирован</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExportDebtorRequestType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий критерии экспорта сведений о гражданине, у которого имеется задолженность, подтвержденная судебным актом </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="INN" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ИНН</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{12}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SNILS" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>СНИЛС</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{11}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IdentityDocument" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Документ, удостоверяющий личность</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Type" type="nsi-base:nsiRef">
+							<xs:annotation>
+								<xs:documentation>Вид документа. Ссылка на НСИ "Документ, удостоверяющий личность" (реестровый номер 95)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Series" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Серия документа, удостоверяющего личность</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="45"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Number">
+							<xs:annotation>
+								<xs:documentation>Номер документа, удостоверяющего личность</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="45"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExportDebtorResultType">
+		<xs:annotation>
+			<xs:documentation>Тип данных, описывающий результаты экспорта сведений о гражданине, у которого имеется задолженность, подтвержденная судебным актом</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SurName">
+				<xs:annotation>
+					<xs:documentation>Фамилия</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="FirstName">
+				<xs:annotation>
+					<xs:documentation>Имя</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Patronymic" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Отчество</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="INN" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ИНН</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{12}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SNILS" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>СНИЛС</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{11}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IdentityDocument" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Документ, удостоверяющий личность</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Type" type="nsi-base:nsiRef">
+							<xs:annotation>
+								<xs:documentation>Вид документа. Ссылка на НСИ "Документ, удостоверяющий личность" (реестровый номер 95)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Series" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Серия документа, удостоверяющего личность</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="45"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Number">
+							<xs:annotation>
+								<xs:documentation>Номер документа, удостоверяющего личность</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="45"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

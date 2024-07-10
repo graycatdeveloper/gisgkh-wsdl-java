@@ -1,0 +1,248 @@
+
+package ru.gosuslugi.dom.schema.integration.tech_conn;
+
+import javax.xml.datatype.XMLGregorianCalendar;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlSchemaType;
+import jakarta.xml.bind.annotation.XmlType;
+import ru.gosuslugi.dom.schema.integration.base.BaseType;
+
+
+/**
+ * <p>Java class for anonymous complex type</p>.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.</p>
+ * 
+ * <pre>{@code
+ * <complexType>
+ *   <complexContent>
+ *     <extension base="{http://dom.gosuslugi.ru/schema/integration/base/}BaseType">
+ *       <choice>
+ *         <element name="ApplicationGuid" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+ *         <element name="GISHCSNumber" type="{http://dom.gosuslugi.ru/schema/integration/tech-conn/}String20Type"/>
+ *         <sequence>
+ *           <element name="From" type="{http://www.w3.org/2001/XMLSchema}date"/>
+ *           <element name="To" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
+ *         </sequence>
+ *         <element name="LastActivityDate" type="{http://www.w3.org/2001/XMLSchema}date"/>
+ *       </choice>
+ *       <attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="13.2.5.0""/>
+ *     </extension>
+ *   </complexContent>
+ * </complexType>
+ * }</pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "applicationGuid",
+    "gishcsNumber",
+    "from",
+    "to",
+    "lastActivityDate"
+})
+@XmlRootElement(name = "exportActApplicationRequest")
+public class ExportActApplicationRequest
+    extends BaseType
+{
+
+    /**
+     * Идентификатор заявления в ГИС ЖКХ
+     * 
+     */
+    @XmlElement(name = "ApplicationGuid")
+    protected String applicationGuid;
+    /**
+     * Номер заявления в ГИС ЖКХ
+     * 
+     */
+    @XmlElement(name = "GISHCSNumber")
+    protected String gishcsNumber;
+    /**
+     * Дата регистрации заявления - с (включительно)
+     * 
+     */
+    @XmlElement(name = "From")
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar from;
+    /**
+     * Дата регистрации заявления - по (включительно)
+     * 
+     */
+    @XmlElement(name = "To")
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar to;
+    /**
+     * Дата последней активности заявителя
+     * 
+     */
+    @XmlElement(name = "LastActivityDate")
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar lastActivityDate;
+    /**
+     * Версия элемента, начиная с которой поддерживается совместимость
+     * 
+     */
+    @XmlAttribute(name = "version", namespace = "http://dom.gosuslugi.ru/schema/integration/base/", required = true)
+    protected String version;
+
+    /**
+     * Идентификатор заявления в ГИС ЖКХ
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getApplicationGuid() {
+        return applicationGuid;
+    }
+
+    /**
+     * Sets the value of the applicationGuid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     * @see #getApplicationGuid()
+     */
+    public void setApplicationGuid(String value) {
+        this.applicationGuid = value;
+    }
+
+    /**
+     * Номер заявления в ГИС ЖКХ
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getGISHCSNumber() {
+        return gishcsNumber;
+    }
+
+    /**
+     * Sets the value of the gishcsNumber property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     * @see #getGISHCSNumber()
+     */
+    public void setGISHCSNumber(String value) {
+        this.gishcsNumber = value;
+    }
+
+    /**
+     * Дата регистрации заявления - с (включительно)
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getFrom() {
+        return from;
+    }
+
+    /**
+     * Sets the value of the from property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     * @see #getFrom()
+     */
+    public void setFrom(XMLGregorianCalendar value) {
+        this.from = value;
+    }
+
+    /**
+     * Дата регистрации заявления - по (включительно)
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getTo() {
+        return to;
+    }
+
+    /**
+     * Sets the value of the to property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     * @see #getTo()
+     */
+    public void setTo(XMLGregorianCalendar value) {
+        this.to = value;
+    }
+
+    /**
+     * Дата последней активности заявителя
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getLastActivityDate() {
+        return lastActivityDate;
+    }
+
+    /**
+     * Sets the value of the lastActivityDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     * @see #getLastActivityDate()
+     */
+    public void setLastActivityDate(XMLGregorianCalendar value) {
+        this.lastActivityDate = value;
+    }
+
+    /**
+     * Версия элемента, начиная с которой поддерживается совместимость
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVersion() {
+        if (version == null) {
+            return "13.2.5.0";
+        } else {
+            return version;
+        }
+    }
+
+    /**
+     * Sets the value of the version property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     * @see #getVersion()
+     */
+    public void setVersion(String value) {
+        this.version = value;
+    }
+
+}
